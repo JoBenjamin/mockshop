@@ -6,15 +6,16 @@ export const CategoriesList = () => {
     const productsByCategory = useSelector(state=>state.products)
 
     const useStyles = makeStyles({
-        card: {
-            margin: '10px'
-        },
         image: {
-            maxWidth: '300px',
-            maxHeight: '400px'
+            width: '200px',
+            height: '300px',
+            backgroundSize: 'contain'
         },
         progress: {
             marginTop: '20px'
+        },
+        title: {
+            textTransform: 'capitalize'
         }
     });
 
@@ -24,20 +25,23 @@ export const CategoriesList = () => {
 
         const names = Object.keys(productsByCategory);
         return names.map((item, index)=>{
-            return (
-                    <Card className={classes.card}>
-                        <CardActionArea >
-                    <CardMedia component='img' className={classes.image}  image={productsByCategory[item][0].image} />
-                    <CardContent>
-                    <Typography variant='h5' align='center'>{item}</Typography>
-                    </CardContent>
-                        </CardActionArea>
-                    </Card>)
+            return (<Grid item key={`card_${index}`}>
+                        <Card>
+                            <CardActionArea >
+                                <CardMedia className={classes.image}  image={productsByCategory[item][0].image} />
+                                <CardContent>
+                                    <Typography className={classes.title} variant='h5' align='center'>{item}</Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>)
         });
     }
 
     return (<Grid container
         direction="row"
         justify="center"
+        alignItems="center"
+        spacing={2}
         >{Object.keys(productsByCategory).length !== 0 ? renderCategories() : <CircularProgress className={classes.progress}/>}</Grid>)
 }
