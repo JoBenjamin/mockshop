@@ -3,24 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
+import { rootReducer } from './reducers/rootReducer';
+import thunk from 'redux-thunk';
 
-
-
-const initialState = {count: 0}
-
-const reducer = (state=initialState, action) => {
-  console.log('root reducer', state, action)
-  if (action.type === 'INCREMENT') {
-    return {
-      ...state,
-      count: state.count + 1 
-    }
-  }
-  return state;
-};
-
-const store = createStore(reducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>

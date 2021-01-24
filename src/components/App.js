@@ -1,23 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CategoriesList } from './CategoriesList';
 
 function App() {
-  const count = useSelector(state => state.count)
   const dispatch = useDispatch();
 
-  const increaseCount = () => {
-    dispatch({
-      type: "INCREMENT"
-    });
+  const fetchData = (url) => {
+    return (dispatch, getState) => {
+      fetch('https://fakestoreapi.com/products').then((res)=>{
+        return res.json()
+      }).then((res)=>{
+        dispatch({
+          type: 'POPULATE_PRODUCTS',
+          payload: res
+        })  
+      })
+    }
   }
 
-  return <>
-    <div>
-      {count}
-    </div>
-    <button onClick={increaseCount}>
-      increase count
-    </button></>;
+  useEffect(()=>{
+    dispatch(fetchData('https://fakestoreapi.com/products'))
+  },[]);
+
+  return <CategoriesList />
 }
 
 export default App;
